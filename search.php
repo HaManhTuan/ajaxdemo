@@ -1,0 +1,50 @@
+<?php 
+	include("config.php"); 
+	connectDB();
+	$search=$_POST['search'];
+	$sql="SELECT * FROM hocsinh WHERE hoten LIKE '%$search%' OR diachi LIKE '%$search%' OR khoa LIKE '%$search%'";
+	$kq=mysql_query($sql);
+	$num = mysql_num_rows($kq);
+	if ($num > 0 && $search != "") 
+    { ?>
+	  <button type="button" class="btn btn-primary" id="btn_delete" style="float: right;margin-bottom: 5px;">Xóa nhiều</button>
+    	<table class="table table-bordered" id="example">
+		<thead>
+		    <tr>
+		      <th scope="col"><input type="checkbox"></th>
+		      <th scope="col">MÃ SỐ</th>
+		      <th scope="col">HỌ TÊN</th>
+		      <th scope="col">ĐỊA CHỈ</th>
+		      <th scope="col">KHOA</th>
+		      <th scope="col">Hành động</th>
+		    </tr>
+	  </thead>
+	  <tbody class="insert">
+	  	<?php 
+	  	    while ($mang=mysql_fetch_assoc($kq)) {
+	  	    ?> 
+	  	        <tr id="<?php echo $mang['id'];?>">
+	  	          <td><input type="checkbox" name="id[]" value="<?php echo $mang['id'];?>"></td>
+	  	          <td><?php echo $mang['id'];?></td>
+			      <td><?php echo $mang['hoten']; ?></td>
+			      <td><?php echo $mang['diachi']; ?></td>
+			      <td><?php echo $mang['khoa']; ?></td>
+			      <td>
+			      	<button type="button" class="btn btn-success update" data-id="<?php echo $mang['id'];?>"><i class="fa fa-edit"></i></button>
+			      	<button type="button" class="btn btn-danger del" data-id="<?php echo $mang['id'];?>"><i class="fa fa-trash"></i></button>
+			      </td>
+			    </tr> 
+	    <?php }?>
+	  </tbody>
+	</table>
+  <?php  }
+   else { ?>
+   	   <div class="alert alert-warning" role="alert">
+   	       <strong>Lỗi!</strong> Không tìm thấy kết quả nào.
+   	   </div>
+   <?php  } 
+
+
+  ?>
+
+ 
